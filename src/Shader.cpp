@@ -16,7 +16,7 @@ std::string get_file_contents(const char* filename) {
         in.close();
         return contents;
     }
-    throw(errno);
+    throw std::runtime_error(std::string("Failed to open shader file: ") + filename);
 }
 
 Shader::Shader(const char* vertexFile, const char* fragmentFile) {

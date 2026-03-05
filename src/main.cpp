@@ -2,6 +2,9 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <iostream>
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -26,9 +29,13 @@ const float SCREEN_HEIGHT = 720.0f;
 
 const float SIM_WIDTH = SCREEN_WIDTH / PIXELS_PER_METER;
 const float SIM_HEIGHT = SCREEN_HEIGHT / PIXELS_PER_METER;
+const float SIM_DEPTH = SIM_WIDTH;
 
 GLFWwindow* startGLFW();
 bool initGLAD();
+void addRandomSpheres(std::vector<std::unique_ptr<Object>>& objects, unsigned int count);
+
+
 
 
 int main()
@@ -37,7 +44,15 @@ int main()
 
     if (!window || !initGLAD()) return -1;
 
-    Shader shaderProgram("shaders/default.vert", "shaders/default.frag");
+    Shader shaderProgram = [&]() {
+        try {
+            return Shader("glsl shaders/default.vert", "glsl shaders/default.frag");
+        } catch (const std::exception& e) {
+            std::cerr << e.what() << std::endl;
+            glfwTerminate();
+            std::exit(-1);
+        }
+    }();
 
     int colorLoc = glGetUniformLocation(shaderProgram.ID, "objectColor");
     int modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
@@ -45,19 +60,20 @@ int main()
     double lastTime = glfwGetTime();
 
     std::vector<std::unique_ptr<Object>> objects;
+	// addRandomSpheres(objects, 100);
 
-	for (int i = 0; i < 10000; i++) {
-        float x = static_cast<float>(rand()) / RAND_MAX * SIM_WIDTH;
-        float y = static_cast<float>(rand()) / RAND_MAX * SIM_HEIGHT;
-        float vx = (static_cast<float>(rand()) / RAND_MAX - 0.5f) * 2.0f;
-        float vy = (static_cast<float>(rand()) / RAND_MAX - 0.5f) * 2.0f;
-		float red = static_cast<float>(rand()) / RAND_MAX;
-		float green = static_cast<float>(rand()) / RAND_MAX;
-		float blue = static_cast<float>(rand()) / RAND_MAX;
-        objects.push_back(std::make_unique<Sphere>(glm::vec2(x, y), glm::vec2(vx, vy), 0.3f, glm::vec3(red, green, blue)));
-    }
+    
 
-	Camera camera((int)SCREEN_WIDTH, (int)SCREEN_HEIGHT, glm::vec3(0, 7, 0));
+	// Centre the camera on the scene, pull back on Z so the full volume is visible
+	Camera camera((int)SCREEN_WIDTH, (int)SCREEN_HEIGHT,
+		glm::vec3(SIM_WIDTH / 2.0f, SIM_HEIGHT / 2.0f, SIM_WIDTH));
+
+	IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
 
     glEnable(GL_DEPTH_TEST);
 
@@ -73,19 +89,38 @@ int main()
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			shaderProgram.Activate();
 
-            
-            camera.inputs(window);
-			camera.matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
+            ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
+
+            if (!io.WantCaptureKeyboard) {
+                camera.inputs(window);
+                camera.matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
+            }
 
 			for (auto& obj : objects) {
+				obj->updatePos(dt);
+				obj->boundaryCheck(SIM_WIDTH, SIM_HEIGHT, SIM_DEPTH);
 				obj->draw(modelLoc, colorLoc);
 			}
+
+			ImGui::Begin("Simulation Controls");
+            ImGui::Text("FPS: %.1f", 1.0f / deltaTime);
+			ImGui::Text("Object Count: %d", (int)objects.size());
+			ImGui::End();
+
+			ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
             glfwSwapBuffers(window);
         }
 
         glfwPollEvents();
     }
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     objects.clear();
     shaderProgram.Delete();
@@ -122,4 +157,19 @@ bool initGLAD() {
         return false;
     }
     return true;
+}
+
+void addRandomSpheres(std::vector<std::unique_ptr<Object>>& objects, unsigned int count) {
+    for (int i = 0; i < count; i++) {
+        float x = static_cast<float>(rand()) / RAND_MAX * SIM_WIDTH;
+        float y = static_cast<float>(rand()) / RAND_MAX * SIM_HEIGHT;
+        float z = (static_cast<float>(rand()) / RAND_MAX) * SIM_DEPTH;
+        float vx = (static_cast<float>(rand()) / RAND_MAX - 0.5f) * 2.0f;
+        float vy = (static_cast<float>(rand()) / RAND_MAX - 0.5f) * 2.0f;
+        float vz = (static_cast<float>(rand()) / RAND_MAX - 0.5f) * 2.0f;
+        float red = static_cast<float>(rand()) / RAND_MAX;
+        float green = static_cast<float>(rand()) / RAND_MAX;
+        float blue = static_cast<float>(rand()) / RAND_MAX;
+        objects.push_back(std::make_unique<Sphere>(glm::vec3(x, y, z), glm::vec3(vx, vy, vz), 0.3f, glm::vec3(red, green, blue)));
+    }
 }

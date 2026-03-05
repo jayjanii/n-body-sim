@@ -99,10 +99,21 @@ void Sphere::draw(int modelLoc, int colorLoc) {
 	meshVAO.Unbind();
 }
 
-void Sphere::boundaryCheck(float SIM_WIDTH, float SIM_HEIGHT) {
-// TODO
+void Sphere::boundaryCheck(float SIM_WIDTH, float SIM_HEIGHT, float SIM_DEPTH) {
+    if (pos.y - r < 0 || pos.y + r > SIM_HEIGHT) {
+        pos.y  = (pos.y - r < 0) ? r : SIM_HEIGHT - r;
+        vel.y *= -0.7f;
+    }
+    if (pos.x - r < 0 || pos.x + r > SIM_WIDTH) {
+        pos.x  = (pos.x - r < 0) ? r : SIM_WIDTH - r;
+        vel.x *= -0.5f;
+    }
+    if (pos.z - r < 0 || pos.z + r > SIM_DEPTH) {
+        pos.z  = (pos.z - r < 0) ? r : SIM_DEPTH - r;
+        vel.z *= -0.7f;
+    }
 }
 
 void Sphere::collisionCheck(Sphere& other) {
-// TODO
+	// TODO (optional): implement elastic collision response between two spheres
 }

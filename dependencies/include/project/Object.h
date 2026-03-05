@@ -16,7 +16,7 @@ public:
 	void updatePos(float dt);
 
 	virtual void draw(int modelLoc, int colorLoc) = 0;
-	virtual void boundaryCheck(float SIM_WIDTH, float SIM_HEIGHT) = 0;
+	virtual void boundaryCheck(float SIM_WIDTH, float SIM_HEIGHT, float SIM_DEPTH) = 0;
 };
 
 #endif

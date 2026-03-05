@@ -23,7 +23,7 @@ public:
 	~Sphere() override;
 
 	void draw(int modelLoc, int colorLoc) override;
-	void boundaryCheck(float SIM_WIDTH, float SIM_HEIGHT) override;
+	void boundaryCheck(float SIM_WIDTH, float SIM_HEIGHT, float SIM_DEPTH) override;
 	void collisionCheck(Sphere& other);
 
 private:
