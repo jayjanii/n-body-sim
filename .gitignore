@@ -1,1 +1,34 @@
+## --- Visual Studio Temp/User Files ---
 .vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+## --- Build Output Directories ---
+[Debug]/
+[Release]/
+x64/
+x86/
+bin/
+obj/
+
+## --- C++ Specific Artifacts ---
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.lib
+*.exp
+*.tlog
+*.lastbuildstate
+*.idb
+*.ipch
+*.pch
+
+# vcpkg/
+
+## --- System / Misc ---
+Thumbs.db
+Desktop.ini
+.DS_Store
