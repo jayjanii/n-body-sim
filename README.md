@@ -92,18 +92,6 @@ Real-time N-body gravitational simulation built with OpenGL 3.3 Core Profile. Us
 
 ---
 
-## Building
-
-1. Clone: `git clone https://github.com/jayjanii/n-body-sim.git`
-2. Open `physics-opengl.vcxproj` in Visual Studio 2022 or later.
-3. Select **Debug x64** or **Release x64**.
-4. Build with `Ctrl+Shift+B`.
-5. Run with `F5`. The working directory must be the project root for shaders to resolve.
-
-> If shaders fail to load, set **Project Properties > Debugging > Working Directory** to `$(ProjectDir)`.
-
----
-
 ## Project Structure
 
 ```
@@ -131,24 +119,43 @@ physics-opengl/
 
 ---
 
-## Physics Notes
+## Physics Implementation
 
-**Gravitational constant** — In AU / solar mass / year units: `G = 4π² ≈ 39.478`, derived directly from Kepler's third law.
+### Numerical Integration
+To maintain orbital stability and conserve energy, this simulation utilizes a **Velocity Verlet** (kick-drift-kick) scheme. This is a symplectic integrator, meaning it is specifically designed to keep the energy error bounded over long durations.
 
-**Velocity Verlet** — Kick-drift-kick scheme; one force evaluation per step; symplectic (bounded energy error).
+$$
+\begin{aligned}
+v &\leftarrow v + 0.5 \cdot a(t) \cdot dt \\
+x &\leftarrow x + v \cdot dt \\
+a &\leftarrow \text{computeAccelerations}(x) \\
+v &\leftarrow v + 0.5 \cdot a \cdot dt
+\end{aligned}
+$$
 
-```
-v += 0.5 * a(t) * dt
-x += v * dt
-a  = computeAccelerations(x)
-v += 0.5 * a * dt
-```
+### Keplerian State Vectors
+The simulation constructs orbits using perifocal unit vectors $\mathbf{Q}$ (perihelion) and $\mathbf{P}$ ($90^\circ$ ahead). 
 
-**Keplerian state vectors** — Perifocal unit vectors Q (perihelion) and P (90° ahead) are constructed from orbital elements, then:
+$$
+\begin{aligned}
+\mathbf{pos} &= r \cdot (\cos(\nu)\mathbf{Q} + \sin(\nu)\mathbf{P}) \\
+\mathbf{vel} &= \sqrt{\frac{GM}{p}} \cdot (-\sin(\nu)\mathbf{Q} + (e + \cos(\nu))\mathbf{P})
+\end{aligned}
+$$
 
-```
-pos = r * (cos(nu)*Q + sin(nu)*P)
-vel = sqrt(GM/p) * (-sin(nu)*Q + (e + cos(nu))*P)
-```
+> **Note:** The true anomaly $\nu$ is derived from the eccentric anomaly $E$, solved via Newton iteration on Kepler's Equation $M = E - e \cdot \sin(E)$ to a precision below $1e^{-9}$ rad.
 
-True anomaly `nu` is derived from eccentric anomaly `E`, solved via Newton iteration on `M = E - e*sin(E)` to below `1e-9` rad. Astronomical ecliptic frame (Z = north) is remapped to OpenGL (Y = up) by swapping Y and Z.
+---
+
+## Orbital Configurations
+
+### Orthogonal Intersecting Binaries
+This setup places two binary pairs on planes exactly $90^\circ$ apart (e.g., $XZ$ and $XY$ planes).
+
+* **A Pure Math Creation:** Real star systems usually form on a single flat plane. These are a pure mathematical concept possible only in code.
+* **The Ejection Inevitability:** Because the planes are orthogonal, their forces cancel out perfectly. If the symmetry is broken by even a tiny fraction, the system becomes chaotic, often resulting in one pair being ejected into deep space.
+
+
+
+### The Sitnikov Problem
+A classic 3D symmetric setup where two massive bodies orbit in a plane while a third "oscillator" body moves strictly along the vertical $Z$-axis, passing through the center of mass.
