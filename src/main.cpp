@@ -60,13 +60,13 @@ int main()
     double lastTime = glfwGetTime();
 
     std::vector<std::unique_ptr<Object>> objects;
-	// addRandomSpheres(objects, 100);
+	addRandomSpheres(objects, 1000);
 
     
 
 	// Centre the camera on the scene, pull back on Z so the full volume is visible
 	Camera camera((int)SCREEN_WIDTH, (int)SCREEN_HEIGHT,
-		glm::vec3(SIM_WIDTH / 2.0f, SIM_HEIGHT / 2.0f, SIM_WIDTH));
+		glm::vec3(SIM_WIDTH / 2.0f, SIM_HEIGHT / 2.0f, SIM_DEPTH));
 
 	IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -74,6 +74,8 @@ int main()
     ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
+
+    float scale = 1.0f;
 
     glEnable(GL_DEPTH_TEST);
 
@@ -91,22 +93,24 @@ int main()
 
             ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
-			ImGui::NewFrame();
+            ImGui::NewFrame();
 
-            if (!io.WantCaptureKeyboard) {
+            if (!io.WantCaptureKeyboard && !io.WantCaptureMouse) {
                 camera.inputs(window);
-                camera.matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
             }
+
+            camera.matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
 
 			for (auto& obj : objects) {
 				obj->updatePos(dt);
 				obj->boundaryCheck(SIM_WIDTH, SIM_HEIGHT, SIM_DEPTH);
-				obj->draw(modelLoc, colorLoc);
+				obj->draw(modelLoc, colorLoc, scale);
 			}
 
 			ImGui::Begin("Simulation Controls");
             ImGui::Text("FPS: %.1f", 1.0f / deltaTime);
 			ImGui::Text("Object Count: %d", (int)objects.size());
+            ImGui::SliderFloat("Scale", &scale, 0.1f, 5.0f);
 			ImGui::End();
 
 			ImGui::Render();

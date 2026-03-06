@@ -86,10 +86,10 @@ void Sphere::generateMesh() {
 	meshEBO->Unbind();
 }
 
-void Sphere::draw(int modelLoc, int colorLoc) {
+void Sphere::draw(int modelLoc, int colorLoc, float scale) {
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(pos.x, pos.y, pos.z));
-	model = glm::scale(model, glm::vec3(r, r, r));
+	model = glm::scale(model, glm::vec3(r, r, r) * scale);
 
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	glUniform4f(colorLoc, color.r, color.g, color.b, 1.0f);

@@ -22,7 +22,7 @@ public:
 		int sectors = 36, int stacks = 18);
 	~Sphere() override;
 
-	void draw(int modelLoc, int colorLoc) override;
+	void draw(int modelLoc, int colorLoc, float scale) override;
 	void boundaryCheck(float SIM_WIDTH, float SIM_HEIGHT, float SIM_DEPTH) override;
 	void collisionCheck(Sphere& other);
 

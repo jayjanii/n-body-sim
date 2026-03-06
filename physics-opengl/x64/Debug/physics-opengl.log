@@ -1,6 +1,3 @@
-﻿  Object.cpp
-  Sphere.cpp
-  main.cpp
-C:\Users\jayja\source\repos\physics-opengl\src\main.cpp(163,23): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
+﻿  main.cpp
+C:\Users\jayja\source\repos\physics-opengl\src\main.cpp(167,23): warning C4018: '<': signed/unsigned mismatch
   physics-opengl.vcxproj -> C:\Users\jayja\source\repos\physics-opengl\x64\Debug\physics-opengl.exe
