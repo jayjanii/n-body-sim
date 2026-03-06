@@ -183,36 +183,25 @@ static void loadSymmetric(std::vector<std::unique_ptr<Object>>& objects, int n) 
 	float radius = 1.5f;
 	float visualR = 0.10f;
 
-	// For a symmetric n-body on a circle:
-	// The gravitational pull toward the center from (n-1) equal masses determines the orbital speed.
-	// F_center = sum of forces projected toward center
-	// v = sqrt(G * mass * S / radius) where S = sum_{k=1}^{n-1} 1/(2*sin(pi*k/n)) * cos component
-	// Simplified: compute the net inward acceleration and set v = sqrt(a_net * radius)
+	// Orbital speed from centripetal balance: v = sqrt(|a_net| * R).
+	// a_net is the total inward acceleration on body 0 (at (R, 0, 0)) from the other (n-1) bodies.
 	float accelInward = 0.0f;
 	for (int k = 1; k < n; k++) {
 		float angle = 2.0f * static_cast<float>(M_PI) * k / n;
-		// Distance between body 0 and body k on a unit circle of radius R
+		// Chord distance from body 0 to body k on the orbit circle
 		float dist = 2.0f * radius * sinf(static_cast<float>(M_PI) * k / n);
-		// Force magnitude (per unit mass, from body k): G * mass / dist^2
-		// Component toward center:
+		// Force per unit mass components (XZ plane)
 		float fx = G_SIM * mass * (cosf(angle) - 1.0f) / (dist * dist * dist) * 2.0f * radius * (cosf(angle) - 1.0f);
 		float fy = G_SIM * mass * sinf(angle) / (dist * dist * dist) * 2.0f * radius * sinf(angle);
-		// Actually let me compute this more carefully
-		// Position of body 0: (R, 0)
-		// Position of body k: (R*cos(theta_k), R*sin(theta_k))
-		// Direction from 0 to k: (R*cos(theta_k) - R, R*sin(theta_k))
-		// |dir| = dist (computed above)
-		// Force on 0 from k: G*m/dist^2 * dir_normalized
-		// Radial component toward center = -dot(force, r_hat) where r_hat = (1,0) for body 0
+		// Displacement from body 0 to body k in the XZ plane
 		float dx = radius * cosf(angle) - radius;
 		float dz = radius * sinf(angle);
 		float d = sqrtf(dx * dx + dz * dz);
-		// Force toward center component (negative x for body at +x)
-		accelInward += G_SIM * mass * (-dx) / (d * d * d) * (-1.0f); // wait, let me be more careful
+		// Inward (-x) component of gravitational acceleration on body 0 from body k
+		accelInward += G_SIM * mass * (-dx) / (d * d * d) * (-1.0f);
 	}
 
-	// Let me just compute it properly: net acceleration on body 0 at (R, 0, 0)
-	// toward center is in -x direction
+	// Net x-component of gravitational acceleration on body 0 at (R, 0, 0)
 	float ax_total = 0.0f;
 	for (int k = 1; k < n; k++) {
 		float angle = 2.0f * static_cast<float>(M_PI) * k / n;
@@ -220,11 +209,10 @@ static void loadSymmetric(std::vector<std::unique_ptr<Object>>& objects, int n) 
 		float dz = radius * sinf(angle);
 		float d2 = dx * dx + dz * dz;
 		float d = sqrtf(d2);
-		// acceleration on body 0 from body k, x component
+		// x-component of acceleration on body 0 from body k
 		ax_total += G_SIM * mass * dx / (d * d2);
 	}
-	// ax_total should be negative (pointing toward center since body is at +x)
-	// Centripetal: v^2/R = |ax_total|
+	// ax_total is negative (inward, body 0 is at +x). Centripetal balance: v^2/R = |ax_total|.
 	float speed = sqrtf(fabsf(ax_total) * radius);
 
 	// Color palette
