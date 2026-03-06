@@ -1,12 +1,15 @@
-### [DEMO VIDEO](https://www.youtube.com/watch?v=K6IvV7ppBJg)
-
-[![Video Title](https://img.youtube.com/vi/K6IvV7ppBJg/0.jpg)](https://www.youtube.com/watch?v=K6IvV7ppBJg)
-
 ---
 
 # N-Body Gravitational Simulator
 
 Real-time N-body gravitational simulation built with OpenGL 3.3 Core Profile. Uses a symplectic Velocity Verlet integrator for long-term energy conservation. The Solar System scenario uses real J2000 Keplerian orbital elements for accurate elliptical orbits with true 3D inclinations.
+
+### [DEMO VIDEO LINK](https://www.youtube.com/watch?v=K6IvV7ppBJg)
+
+<p align="center">
+    <img src="demo-assets/demo1.gif" width="500" alt="demo1">
+    <img src="demo-assets/demo2.gif" width="500" alt="demo2">
+</p>
 
 ---
 
