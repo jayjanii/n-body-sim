@@ -92,18 +92,6 @@ Real-time N-body gravitational simulation built with OpenGL 3.3 Core Profile. Us
 
 ---
 
-## Building
-
-1. Clone: `git clone https://github.com/jayjanii/n-body-sim.git`
-2. Open `physics-opengl.vcxproj` in Visual Studio 2022 or later.
-3. Select **Debug x64** or **Release x64**.
-4. Build with `Ctrl+Shift+B`.
-5. Run with `F5`. The working directory must be the project root for shaders to resolve.
-
-> If shaders fail to load, set **Project Properties > Debugging > Working Directory** to `$(ProjectDir)`.
-
----
-
 ## Project Structure
 
 ```
