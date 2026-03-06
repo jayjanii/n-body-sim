@@ -26,8 +26,6 @@ obj/
 *.ipch
 *.pch
 
-# vcpkg/
-
 ## --- System / Misc ---
 Thumbs.db
 Desktop.ini
