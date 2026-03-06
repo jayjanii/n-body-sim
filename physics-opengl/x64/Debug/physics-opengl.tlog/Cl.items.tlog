@@ -14,3 +14,6 @@ C:\Users\jayja\source\repos\physics-opengl\src\Shader.cpp;C:\Users\jayja\source\
 C:\Users\jayja\source\repos\physics-opengl\src\Sphere.cpp;C:\Users\jayja\source\repos\physics-opengl\physics-opengl\x64\Debug\Sphere.obj
 C:\Users\jayja\source\repos\physics-opengl\src\VAO.cpp;C:\Users\jayja\source\repos\physics-opengl\physics-opengl\x64\Debug\VAO.obj
 C:\Users\jayja\source\repos\physics-opengl\src\VBO.cpp;C:\Users\jayja\source\repos\physics-opengl\physics-opengl\x64\Debug\VBO.obj
+C:\Users\jayja\source\repos\physics-opengl\src\Grid.cpp;C:\Users\jayja\source\repos\physics-opengl\physics-opengl\x64\Debug\Grid.obj
+C:\Users\jayja\source\repos\physics-opengl\src\OrbitTrail.cpp;C:\Users\jayja\source\repos\physics-opengl\physics-opengl\x64\Debug\OrbitTrail.obj
+C:\Users\jayja\source\repos\physics-opengl\src\Scenarios.cpp;C:\Users\jayja\source\repos\physics-opengl\physics-opengl\x64\Debug\Scenarios.obj

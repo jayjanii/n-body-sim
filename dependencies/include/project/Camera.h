@@ -25,8 +25,9 @@ public:
 	int width;
 	int height;
 
-	float speed = 0.1f;
+	float speed       = 0.1f;
 	float sensitivity = 50.0f;
+	float scrollDelta = 0.0f; // accumulated scroll, consumed each frame
 
 	Camera(int width, int height, glm::vec3 position);
 

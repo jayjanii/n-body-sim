@@ -149,6 +149,9 @@
     <ClCompile Include="src\Sphere.cpp" />
     <ClCompile Include="src\VAO.cpp" />
     <ClCompile Include="src\VBO.cpp" />
+    <ClCompile Include="src\Grid.cpp" />
+    <ClCompile Include="src\OrbitTrail.cpp" />
+    <ClCompile Include="src\Scenarios.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\imgui\imconfig.h" />
@@ -171,6 +174,9 @@
     <ClInclude Include="dependencies\include\project\Sphere.h" />
     <ClInclude Include="dependencies\include\project\VAO.h" />
     <ClInclude Include="dependencies\include\project\VBO.h" />
+    <ClInclude Include="dependencies\include\project\Grid.h" />
+    <ClInclude Include="dependencies\include\project\OrbitTrail.h" />
+    <ClInclude Include="dependencies\include\project\Scenarios.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\lib\glfw3.lib" />
@@ -178,6 +184,10 @@
   <ItemGroup>
     <None Include="glsl shaders\default.frag" />
     <None Include="glsl shaders\default.vert" />
+    <None Include="glsl shaders\grid.frag" />
+    <None Include="glsl shaders\grid.vert" />
+    <None Include="glsl shaders\glow.frag" />
+    <None Include="glsl shaders\glow.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

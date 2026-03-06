@@ -10,6 +10,7 @@
 class Sphere : public Object {
 public:
 	float r;
+	bool isStar;
 	int sectors;
 	int stacks;
 	unsigned int indexCount;
@@ -18,13 +19,11 @@ public:
 	std::unique_ptr<VBO> meshVBO;
 	std::unique_ptr<EBO> meshEBO;
 
-	Sphere(glm::vec3 position, glm::vec3 velocity, float radius, glm::vec3 color,
-		int sectors = 36, int stacks = 18);
+	Sphere(glm::vec3 position, glm::vec3 velocity, float mass, float radius,
+		glm::vec3 color, bool isStar = false, int sectors = 36, int stacks = 18);
 	~Sphere() override;
 
-	void draw(int modelLoc, int colorLoc, float scale) override;
-	void boundaryCheck(float SIM_WIDTH, float SIM_HEIGHT, float SIM_DEPTH) override;
-	void collisionCheck(Sphere& other);
+	void draw(int modelLoc, int colorLoc, int isStarLoc, float visualScale = 1.0f) override;
 
 private:
 	void generateMesh();

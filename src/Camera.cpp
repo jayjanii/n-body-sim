@@ -15,29 +15,33 @@ void Camera::matrix(float FOVdeg, float nearPlane, float farPlane, Shader& shade
 
 
 void Camera::inputs(GLFWwindow* window) {
+	// Scroll adjusts the persistent base speed — applied first so sprint multiplies it
+	if (scrollDelta != 0.0f) {
+		speed *= (scrollDelta > 0.0f ? 1.25f : 0.8f);
+		speed = glm::clamp(speed, 0.0001f, 20.0f);
+		scrollDelta = 0.0f;
+	}
+
+	// Shift is a temporary 5x sprint multiplier, not a hard speed override
+	float activeSpeed = speed * (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ? 5.0f : 1.0f);
+
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		Position += speed * Orientation;
+		Position += activeSpeed * Orientation;
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		Position -= speed * Orientation;
+		Position -= activeSpeed * Orientation;
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		Position -= glm::normalize(glm::cross(Orientation, Up)) * speed;
+		Position -= glm::normalize(glm::cross(Orientation, Up)) * activeSpeed;
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		Position += glm::normalize(glm::cross(Orientation, Up)) * speed;
+		Position += glm::normalize(glm::cross(Orientation, Up)) * activeSpeed;
 	}
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-		Position += speed * Up;
+		Position += activeSpeed * Up;
 	}
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
-		Position -= speed * Up;
-	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-		speed = 0.5f;
-	}
-	else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) {
-		speed = 0.1f;
+		Position -= activeSpeed * Up;
 	}
 
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
