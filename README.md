@@ -7,8 +7,8 @@ Real-time N-body gravitational simulation built with OpenGL 3.3 Core Profile. Us
 ### [DEMO VIDEO LINK](https://www.youtube.com/watch?v=K6IvV7ppBJg)
 
 <p align="center">
-    <img src="demo-assets/demo1.gif" width="500" alt="demo1">
-    <img src="demo-assets/demo2.gif" width="500" alt="demo2">
+    <img src="demo-assets/demo1.gif" width="400" alt="demo1">
+    <img src="demo-assets/demo2.gif" width="400" alt="demo2">
 </p>
 
 ---
