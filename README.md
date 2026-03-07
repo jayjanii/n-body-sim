@@ -1,6 +1,6 @@
 ---
 
-# N-Body Gravitational Simulator
+# n-body gravitational simulator
 
 Real-time N-body gravitational simulation built with OpenGL 3.3 Core Profile. Uses a symplectic Velocity Verlet integrator for long-term energy conservation. The Solar System scenario uses real J2000 Keplerian orbital elements for accurate elliptical orbits with true 3D inclinations.
 
@@ -15,15 +15,15 @@ Real-time N-body gravitational simulation built with OpenGL 3.3 Core Profile. Us
 
 ## Features
 
-- **N-body gravity** — All pairs computed each frame using Newton's third law (one evaluation per pair).
-- **Velocity Verlet (kick-drift-kick)** — Second-order symplectic integrator. Stable elliptical orbits with bounded energy error.
-- **Keplerian initial conditions** — Solar System planets initialised from J2000 orbital elements (a, e, i, Ω, ω, M₀) via Newton-iterated Kepler's equation.
-- **Spacetime curvature grid** — Dynamic Flamm's paraboloid mesh that deforms under massive bodies. Fully runtime-configurable.
-- **Orbit trails** — Per-body ring-buffer trail rendered as a line strip.
-- **Star glow billboard** — Camera-facing quad with Gaussian falloff and additive blending per star.
-- **Phong shading** — Diffuse and ambient lighting sourced from all stars in the scene.
-- **Visual body scale** — Global render radius multiplier with no effect on physics.
-- **Scenario system** — Eight presets selectable at runtime from a dropdown; switching resets all state instantly.
+- **N-body gravity**: All pairs computed each frame using Newton's third law (one evaluation per pair).
+- **Velocity Verlet (kick-drift-kick)**: Second-order symplectic integrator. Stable elliptical orbits with bounded energy error.
+- **Keplerian initial conditions**: Solar System planets initialised from J2000 orbital elements (a, e, i, Ω, ω, M₀) via Newton-iterated Kepler's equation.
+- **Spacetime curvature grid**: Dynamic Flamm's paraboloid mesh that deforms under massive bodies. Fully runtime-configurable.
+- **Orbit trails**: Per-body ring-buffer trail rendered as a line strip.
+- **Star glow billboard**: Camera-facing quad with Gaussian falloff and additive blending per star.
+- **Phong shading**: Diffuse and ambient lighting sourced from all stars in the scene.
+- **Visual body scale**: Global render radius multiplier with no effect on physics.
+- **Scenario system**: Eight presets selectable at runtime from a dropdown; switching resets all state instantly.
 
 ---
 
@@ -149,13 +149,11 @@ $$
 
 ## Orbital Configurations
 
+### The Sitnikov Problem
+A classic 3D symmetric setup where two massive bodies orbit in a plane while a third "oscillator" body moves strictly along the vertical $Z$-axis, passing through the center of mass.
+
 ### Orthogonal Intersecting Binaries
 This setup places two binary pairs on planes exactly $90^\circ$ apart (e.g., $XZ$ and $XY$ planes).
 
 * **A Pure Math Creation:** Real star systems usually form on a single flat plane. These are a pure mathematical concept possible only in code.
 * **The Ejection Inevitability:** Because the planes are orthogonal, their forces cancel out perfectly. If the symmetry is broken by even a tiny fraction, the system becomes chaotic, often resulting in one pair being ejected into deep space.
-
-
-
-### The Sitnikov Problem
-A classic 3D symmetric setup where two massive bodies orbit in a plane while a third "oscillator" body moves strictly along the vertical $Z$-axis, passing through the center of mass.
