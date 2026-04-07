@@ -46,7 +46,7 @@ The simulator includes a variety of pre-configured orbital scenarios ranging fro
 
 ### Camera Navigation
 Navigate the 3D space using standard free-look controls. 
-- Use **W / S** to move forward and backward, and **A / D** to strafe sideto-side. 
+- Use **W / S** to move forward and backward, and **A / D** to strafe side-to-side. 
 - Ascend and descend using **Space** and **Left Ctrl**. 
 - To look around, simply **Left Click and Drag** the mouse. 
 - For faster travel, hold **Left Shift** to apply a 5x speed multiplier. You can also permanently adjust your base movement speed by scrolling the **Mouse Wheel** to speed up or slow down.
