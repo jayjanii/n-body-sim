@@ -29,66 +29,45 @@ Real-time N-body gravitational simulation built with OpenGL 3.3 Core Profile. Us
 
 ## Scenarios
 
-| Scenario | Bodies | Description |
-|---|---|---|
-| Solar System | 9 | Sun + 8 planets from J2000 Keplerian elements. Elliptical orbits, real inclinations. |
-| Binary Stars | 3 | Two unequal stars orbiting their barycenter with a circumbinary planet. |
-| Earth + Moon + Sun | 3 | Earth's mass scaled up to keep the Moon's orbit stable at a visible radius. |
-| Symmetric 3-Body V1 | 3 | Equal masses on an equilateral triangle with analytically derived tangential speeds. |
-| Symmetric 3-Body V2 | 3 | Sitnikov problem — binary in XZ plane, test particle oscillating on Y-axis. |
-| Symmetric 4-Body V1 | 4 | Equal masses on a square. |
-| Symmetric 4-Body V2 | 4 | Two orthogonal binary pairs orbiting in perpendicular planes. |
-| Symmetric 5-Body | 5 | Equal masses on a regular pentagon. |
+The simulator includes a variety of pre-configured orbital scenarios ranging from real-world astronomical data to theoretical mathematical alignments:
+
+- **Solar System (9 bodies)**: Features the Sun and 8 planets initialized from real J2000 Keplerian elements, providing accurate elliptical orbits and true 3D inclinations.
+- **Binary Stars (3 bodies)**: Models two stars of unequal mass orbiting their shared barycenter, accompanied by a distant circumbinary planet.
+- **Earth + Moon + Sun (3 bodies)**: A demonstration scale where Earth's mass is artificially increased to maintain a stable and visually discernible lunar orbit.
+- **Symmetric 3-Body V1 (3 bodies)**: Three equal masses positioned on an equilateral triangle, utilizing analytically derived tangential speeds for stable orbits.
+- **Symmetric 3-Body V2 (3 bodies)**: The classic Sitnikov problem, featuring a binary pair orbiting in the XZ plane while a test particle oscillates vertically along the Y-axis.
+- **Symmetric 4-Body V1 (4 bodies)**: Four equal masses locked in a stable orbital square configuration.
+- **Symmetric 4-Body V2 (4 bodies)**: An unstable arrangement of two orthogonal binary pairs orbiting in mutually perpendicular planes.
+- **Symmetric 5-Body (5 bodies)**: Five equal masses maintaining stability along a regular pentagon.
 
 ---
 
 ## Controls
 
-### Camera
-
-| Input | Action |
-|---|---|
-| `W` / `S` | Move forward / backward |
-| `A` / `D` | Strafe left / right |
-| `Space` / `Left Ctrl` | Move up / down |
-| `Left Shift` (hold) | 5x speed multiplier |
-| Scroll Wheel | Increase or decrease base speed by 25% / 20% (persistent, clamped to `[0.0001, 20.0]`) |
-| Left Mouse Button (hold + drag) | Rotate camera |
+### Camera Navigation
+Navigate the 3D space using standard free-look controls. 
+- Use **W / S** to move forward and backward, and **A / D** to strafe sideto-side. 
+- Ascend and descend using **Space** and **Left Ctrl**. 
+- To look around, simply **Left Click and Drag** the mouse. 
+- For faster travel, hold **Left Shift** to apply a 5x speed multiplier. You can also permanently adjust your base movement speed by scrolling the **Mouse Wheel** to speed up or slow down.
 
 ### Simulation Panel
-
-| Control | Range | Description |
-|---|---|---|
-| Scenario | Dropdown | Load a preset |
-| Time Scale | 0.0 – 5.0 yr/s | Simulated years per real second |
-| Visual Body Scale | 0.01 – 5.0 | Render radius multiplier |
-| Curvature | 0.0 – 3.0 | Grid deformation depth |
-| Trail Length | 0 – 2000 | Max trail points per body |
-| Show Spacetime Grid | Checkbox | Toggle grid |
-| Grid Size | 1.0 – 100.0 AU | Grid half-extent |
-| Grid Base Y | -5.0 – 5.0 | Grid vertical offset |
-| Grid Resolution | 10 – 200 | Divisions per axis (rebuilds GPU buffers on change) |
+An interactive Dear ImGui interface allows you to tweak the environment and visual parameters on the fly:
+- **Environment**: Instantly load a new scene from the **Scenario** dropdown or adjust the **Time Scale** (from paused up to 5 simulated years per real second).
+- **Visuals**: Change the **Visual Body Scale** to make celestial bodies larger without impacting physics, or modify the **Trail Length** to alter how much orbital history is drawn.
+- **Spacetime Grid**: Toggle the visual grid on or off. You can fine-tune its deeper characteristics, including the **Curvature** intensity under massive bodies, its overall physical **Size**, the vertical **Grid Base Y** offset, and its underlying **Resolution**, which dynamically rebuilds the GPU buffers.
 
 ---
 
-## Requirements
+## Requirements & Dependencies
 
-| Requirement | Version |
-|---|---|
-| OS | Windows 10 x64 or later |
-| GPU | OpenGL 3.3 Core Profile |
-| Visual Studio | 2022 (toolset v145) or later |
-| Windows SDK | 10.0 |
-| C++ standard | C++20 |
+To build and run the simulation, you will need a system running **Windows 10 x64 (or later)** alongside a GPU that supports the **OpenGL 3.3 Core Profile**. The development environment requires **Visual Studio 2022 (toolset v145 or later)** using C++20 and the Windows 10 SDK.
 
-### Dependencies (vendored, no install required)
-
-| Library | Version | Purpose |
-|---|---|---|
-| GLFW | 3.4 | Window, context, input |
-| GLAD | 0.1.36 | OpenGL function loader |
-| GLM | 1.0.3 | Vector and matrix math |
-| Dear ImGui | 1.92.7 | Runtime control panel |
+**No complicated installations are required** for external libraries, as they are vendored directly in the repository:
+- **GLFW (3.4)** handles window creation, contexts, and user input.
+- **GLAD (0.1.36)** is used for loading OpenGL core functions.
+- **GLM (1.0.3)** provides the essential vector and matrix mathematics.
+- **Dear ImGui (1.92.7)** powers the interactive runtime control panel.
 
 ---
 
@@ -154,8 +133,6 @@ This setup places two binary pairs on planes exactly $90^\circ$ apart (e.g., $XZ
 
 * **A Pure Math Creation:** Real star systems usually form on a single flat plane. These are a pure mathematical concept possible only in code.
 * **The Ejection Inevitability:** Because the planes are orthogonal, their forces cancel out perfectly. If the symmetry is broken by even a tiny fraction, the system becomes chaotic, often resulting in one pair being ejected into deep space.
-
-
 
 ### The Sitnikov Problem
 A classic 3D symmetric setup where two massive bodies orbit in a plane while a third "oscillator" body moves strictly along the vertical $Z$-axis, passing through the center of mass.
